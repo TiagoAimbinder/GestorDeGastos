@@ -5,7 +5,7 @@ export class ManangementService {
 
   createMovement = async (movement) => {
     try {
-      const movementCreated = await ManangementHistory.Create({
+      const movementCreated = await ManangementHistory.create({
         his_amount: movement.his_amount,
         his_description: movement.his_description,
         his_type: movement.his_type,

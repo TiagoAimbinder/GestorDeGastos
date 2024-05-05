@@ -14,6 +14,4 @@ export class ManangementController {
       res.status(500).json({ message: "Error de servidor | createMovement", error: err });
     }
   }; 
-
-
 }; 

@@ -6,7 +6,7 @@ const routeManangement = Router();
 const manangementController = new ManangementController()
 
 /* Funcionalidades:
-  - Crear movimiento (ingreso-egreso) | Post 
+  - Crear movimiento (ingreso-egreso) | Post - Terminado
   - Obtener todos los movimientos | Get
   - Modificar movimiento. (por id) | Put 
   - Eliminar movimiento (por id) - Solo se cambia de estado, no se borra de la base de datos. | Put
