@@ -29,6 +29,10 @@ export default (sequelize)  => {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
+        estado: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+      },
     },
     {
         sequelize,

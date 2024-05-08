@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { authJWT } from "../config/utils.js";
 import { ManangementController } from "../controller/Manangement.controller.js"
+
+
 
 const routeManangement = Router();
 const manangementController = new ManangementController()
@@ -14,9 +15,9 @@ const manangementController = new ManangementController()
 
 routeManangement.post("/create", manangementController.createMovement)
 
-routeManangement.get("/getAll", )
+routeManangement.get("/getAll", manangementController.getAllMovements )
 
-routeManangement.put("/update", );
-routeManangement.put("/delete", );
+routeManangement.put("/update/:id", manangementController.updateMovement );
+routeManangement.put("/delete/:id", manangementController.deleteMovement );
 
 export default routeManangement

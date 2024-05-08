@@ -10,7 +10,8 @@ export class ManangementService {
         his_description: movement.his_description,
         his_type: movement.his_type,
         usu_id: movement.usu_id,
-        cur_id: movement.cur_id
+        cur_id: movement.cur_id,
+        estado: true
       })
       const result = { message: "Movimiento creado correctamente", movement: movementCreated}
       return result;
