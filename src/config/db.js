@@ -46,6 +46,12 @@ const CurrencyType = CurrencyTypeModel(sequelize);
 import LogHistoryModel from '../models/LogHistory.model.js';
 const LogHistory = LogHistoryModel(sequelize); 
 
+import ExpensesModel from '../models/Expenses.model.js';
+const Expenses = ExpensesModel(sequelize);
+
+import CategoryModel from '../models/Category.model.js'; 
+const Category = CategoryModel(sequelize);
+
 
 sequelize.sync({alter : true}) // {alter : true} | alter: Actualiza las tablas creadas de las bases de datos. 
     .then(() => {
@@ -61,4 +67,6 @@ export {
   ManangementHistory,
   CurrencyType,
   LogHistory,
+  Expenses,
+  Category
 }
