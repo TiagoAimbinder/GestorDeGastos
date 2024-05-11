@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { ManangementController } from "../controller/Manangement.controller.js"
-
+import { ManangementRequest } from '../middlewares/Manangement.middleware.js'
 
 
 const routeManangement = Router();
-const manangementController = new ManangementController()
+const manangementController = new ManangementController(); 
+const manangementRequest = new ManangementRequest(); 
 
 /* Funcionalidades:
   - Crear movimiento (ingreso-egreso) | Post - Terminado
@@ -14,10 +15,8 @@ const manangementController = new ManangementController()
 */
 
 routeManangement.post("/create", manangementController.createMovement)
-
 routeManangement.get("/getAll", manangementController.getAllMovements )
-
-routeManangement.put("/update/:id", manangementController.updateMovement );
+routeManangement.put("/update/:his_id/:usu_id", authJWT, manangementRequest.validateUpdate ,manangementController.updateMovement);
 routeManangement.put("/delete/:id", manangementController.deleteMovement );
 
 export default routeManangement

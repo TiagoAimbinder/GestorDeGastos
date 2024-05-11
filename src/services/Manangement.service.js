@@ -20,4 +20,17 @@ export class ManangementService {
       throw err; 
     }
   }
+
+  updateMovement = async (his_id, updatedFields) => {
+    try {
+      const hisUpdated = await ManangementHistory.update(updatedFields, {
+        where: {his_id: his_id}
+      }); 
+      const result = {message: "Movimiento actualizado correctamente"}
+      return result;
+    }
+    catch (err) {
+      throw err; 
+    } 
+  }
 }
