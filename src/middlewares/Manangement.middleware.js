@@ -1,8 +1,6 @@
 import Joi from "joi";
-import { getToken } from "../config/utils.js";
 
 export class ManangementRequest {
-
 
   paramsUpdateSchema = Joi.object({
     usu_id: Joi.number().integer().required(),
