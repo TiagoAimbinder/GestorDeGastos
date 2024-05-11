@@ -10,6 +10,7 @@ const encryptData = (data) => {
   });  
 }
 
+const secret = process.env.SECRET_KEY;
 const authJWT = (req, res, next) => {
   const authHeaders = req.headers.authorization;
   if(authHeaders) {

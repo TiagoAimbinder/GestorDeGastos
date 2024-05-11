@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ManangementController } from "../controller/Manangement.controller.js"
 import { ManangementRequest } from '../middlewares/Manangement.middleware.js'
+import { authJWT } from "../config/utils.js" 
 
 
 const routeManangement = Router();

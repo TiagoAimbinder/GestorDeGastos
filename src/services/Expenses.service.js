@@ -28,7 +28,7 @@ export class ExpensesService {
   updateExpense = async (exp_id, expense) => {
     try {
       const updateExpense = await Expenses.update(expense, { where: {exp_id}});
-      return {message: "Expensa actualizada correctamente"}
+      return {message: "Gasto actualizada correctamente"}
     }
     catch (err) {
       throw err

@@ -57,7 +57,7 @@ export class ExpensesRequest {
   }
 
   validateGetAll = (req, res, next) => {
-    const { error } = this.GetAllExpensesSchema.validate(req.body);
+    const { error } = this.GetAllExpensesSchema.validate(req.params);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
