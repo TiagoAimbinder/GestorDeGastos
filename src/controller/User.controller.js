@@ -6,6 +6,11 @@ export class UserController {
   registerUser = async (req, res) => {
     const { usu_name, usu_password, usu_email, role_id } = req.body;
     const user = await User.findOne({where: {usu_name}});
+    const emailRegex = /^\S+@\S+\.\S+$/;
+
+    if (!emailRegex.test(usu_email)) {
+      return res.status(400).json({ message: "Formato de correo electrónico inválido." });
+    }
 
     if (user) {
       res.status(400).json({message: "Ya existe un usuario registrado con ese nombre."});
