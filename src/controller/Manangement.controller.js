@@ -22,6 +22,9 @@ export class ManangementController {
   }; 
 
   getAllMovements = async (req, res) => {
+
+    const { usu_id } = req.params;
+    
     try {
       // Consulta todos los movimientos de la base de datos
       const movements = await ManangementHistory.findAll({ where: { estado: 1 } });

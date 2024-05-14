@@ -4,9 +4,10 @@ import { UserService } from "../services/User.service.js";
 export class UserController {
 
   registerUser = async (req, res) => {
-    const { usu_name, usu_password, usu_email, role_id } = req.body;
+    const { usu_name, usu_password, usu_email } = req.body;
     const user = await User.findOne({where: {usu_name}});
     const emailRegex = /^\S+@\S+\.\S+$/;
+    const role_id = 2;
 
     if (!emailRegex.test(usu_email)) {
       return res.status(400).json({ message: "Formato de correo electrónico inválido." });
