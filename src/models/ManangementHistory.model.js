@@ -21,6 +21,14 @@ export default (sequelize)  => {
           type: DataTypes.STRING,
           allowNull: false,
         },
+        his_date: {
+          type:DataTypes.DATE,
+          allowNull: false,
+        },
+        his_status: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+        },
         usu_id: {
           type: DataTypes.INTEGER,
           allowNull: false,
@@ -29,10 +37,6 @@ export default (sequelize)  => {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        estado: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-      },
     },
     {
         sequelize,
