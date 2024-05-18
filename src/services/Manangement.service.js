@@ -6,12 +6,13 @@ export class ManangementService {
   createMovement = async (movement) => {
     try {
       const movementCreated = await ManangementHistory.create({
+        his_date: movement.his_date,
         his_amount: movement.his_amount,
         his_description: movement.his_description,
         his_type: movement.his_type,
         usu_id: movement.usu_id,
         cur_id: movement.cur_id,
-        estado: true
+        his_status: true,
       })
       const result = { message: "Movimiento creado correctamente", movement: movementCreated}
       return result;

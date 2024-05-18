@@ -4,21 +4,22 @@ import { ManangementService } from '../services/Manangement.service.js'
 export class ManangementController {
 
   createMovement = async (req, res) => {
-    const { his_amount, his_description, his_type, usu_id, cur_id, estado } = req.body;
+    const { his_amount, his_description, his_type, usu_id, cur_id, his_date} = req.body;
+
     //Validacion para que his_amount solo sea un numpero positivo mayor a 0
     if (typeof his_amount !== 'number' || isNaN(his_amount) || his_amount <= 0) {
       return res.status(400).json({ message: "Monto debe ser numero positivo" });
     }
 
-    const movement = { his_amount, his_description, his_type, usu_id, cur_id, estado };
-    try {
+    const movement = { his_amount, his_description, his_type, usu_id, cur_id, his_date };
+    // try {
       const manangementService = new ManangementService();
       const result = await manangementService.createMovement(movement);
       res.status(201).json(result)
-    } 
-    catch (err) {
-      res.status(500).json({ message: "Error de servidor | createMovement", error: err });
-    }
+    // } 
+    // catch (err) {
+    //   res.status(500).json({ message: "Error de servidor | createMovement", error: err });
+    // }
   }; 
 
   getAllMovements = async (req, res) => {
@@ -27,7 +28,7 @@ export class ManangementController {
     
     try {
       // Consulta todos los movimientos de la base de datos
-      const movements = await ManangementHistory.findAll({ where: { estado: 1 } });
+      const movements = await ManangementHistory.findAll({ where: { his_status: 1 } });
 
       res.status(200).json(movements);
     } catch (error) {
@@ -40,7 +41,7 @@ export class ManangementController {
   deleteMovement = async (req, res) => {
     const { id } = req.params;
     try {
-      await ManangementHistory.update({ estado: false }, { where: { his_id: id } });
+      await ManangementHistory.update({ his_status: false }, { where: { his_id: id } });
 
       res.status(200).json({ message: "Movimiento eliminado correctamente" });
     } catch (error) {
