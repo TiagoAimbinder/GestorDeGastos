@@ -41,6 +41,10 @@ export class UserController {
     try {
         const userService = new UserService();
         const result = await userService.loginUser(user.dataValues, usu_password);
+
+        if (result.statusCode === 401) {
+          return res.status(401).json({ message: result.message });
+        }
         res.status(200).json(result);
     } 
     catch (err) {

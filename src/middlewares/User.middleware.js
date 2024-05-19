@@ -16,7 +16,7 @@ export class UserRequest {
     usu_name: Joi.string().required(),
     usu_password: Joi.string().required(),
     usu_email: Joi.string().required(),
-    role_id: Joi.number().required(),
+    role_id: Joi.number().optional(),
   })
 
   // Validaciones -------------- 
