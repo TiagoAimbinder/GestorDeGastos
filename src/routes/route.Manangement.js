@@ -9,9 +9,10 @@ const manangementController = new ManangementController();
 const manangementRequest = new ManangementRequest(); 
 
 
-routeManangement.post("/create", manangementController.createMovement)
-routeManangement.get("/getAll", manangementController.getAllMovements )
+routeManangement.post("/create", authJWT, manangementRequest.validateCreate, manangementController.createMovement)
+routeManangement.get("/getAll/:usu_id", authJWT, manangementRequest.validateGetAll, manangementController.getAllMovements )
 routeManangement.put("/update/:his_id/:usu_id", authJWT, manangementRequest.validateUpdate ,manangementController.updateMovement);
-routeManangement.delete("/delete/:id", manangementController.deleteMovement );
+routeManangement.put("/delete/:id", authJWT, manangementRequest.validateDelete, manangementController.deleteMovement );
+
 
 export default routeManangement

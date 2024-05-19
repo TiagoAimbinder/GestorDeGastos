@@ -15,6 +15,10 @@ export class ManangementRequest {
     id: Joi.number().required()
   });
 
+  GetAllMovementSchema= Joi.object({
+    usu_id: Joi.number().required(),
+  })
+
   paramsUpdateSchema = Joi.object({
     usu_id: Joi.number().integer().required(),
     his_id: Joi.number().integer().required()
@@ -40,4 +44,27 @@ export class ManangementRequest {
 
     next();
   }
+  validateCreate = (req, res, next) => {
+    const { error } = this.createMovementSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    next();
+  };
+
+  validateDelete = (req, res, next) => {
+    const { error } = this.DeleteMovementSchema.validate(req.params);
+    if (error) {
+      return res.status(400).json({ message: paramsError.details[0].message });
+    }
+    next(); 
+  }
+
+  validateGetAll = (req, res, next) => {
+    const { error } = this.GetAllMovementSchema.validate(req.params);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    next();
+  }; 
 }
