@@ -51,4 +51,16 @@ export class UserController {
         res.status(500).json({ message: "Error de servidor | loginUser", error: err });
     }
   }
+
+  getAllUsers = async (req, res) => {
+    try {
+      const users = await User.findAll({
+        attributes: ['usu_id', 'usu_name'] // Especifica los campos que quieres obtener
+      });
+      res.status(200).json({users: users});
+    }
+    catch(err) {
+      res.status(500).json({message: "Error de servidor | getAllUsers", error: err})
+    }
+  }
 }
