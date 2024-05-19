@@ -6,28 +6,28 @@ export class ManangementController {
   createMovement = async (req, res) => {
     const { his_amount, his_description, his_type, usu_id, cur_id, his_date} = req.body;
 
-    //Validacion para que his_amount solo sea un numpero positivo mayor a 0
+    // Validacion para que his_amount solo sea un número positivo mayor a 0
     if (typeof his_amount !== 'number' || isNaN(his_amount) || his_amount <= 0) {
       return res.status(400).json({ message: "Monto debe ser numero positivo" });
     }
 
     const movement = { his_amount, his_description, his_type, usu_id, cur_id, his_date };
-    // try {
+    try {
       const manangementService = new ManangementService();
       const result = await manangementService.createMovement(movement);
       res.status(201).json(result)
-    // } 
-    // catch (err) {
-    //   res.status(500).json({ message: "Error de servidor | createMovement", error: err });
-    // }
+    } 
+    catch (err) {
+      res.status(500).json({ message: "Error de servidor | createMovement", error: err });
+    }
   }; 
 
   getAllMovements = async (req, res) => {
     try {
       // Consulta todos los movimientos de la base de datos
-      const movements = await ManangementHistory.findAll({ where: { his_status: 1 } });
+      const manangement = await ManangementHistory.findAll({ where: { his_status: 1 } });
 
-      res.status(200).json(movements);
+      res.status(200).json({manangement: manangement});
     } catch (error) {
 
       console.error('Error al obtener los movimientos:', error);
