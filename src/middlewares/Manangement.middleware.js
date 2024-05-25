@@ -6,7 +6,7 @@ export class ManangementRequest {
     his_amount: Joi.number().required(),
     his_date: Joi.date().required(),
     his_description: Joi.string().required(),
-    his_type: Joi.string().valid("ingreso", "egreso").required(),
+    his_type: Joi.string().valid("Ingreso", "Egreso").required(),
     usu_id: Joi.number().required(),
     cur_id: Joi.number().required(),
   });
@@ -16,7 +16,7 @@ export class ManangementRequest {
   });
 
   GetAllMovementSchema= Joi.object({
-    usu_id: Joi.number().required(),
+    usu_id: Joi.number().optional(),
   })
 
   paramsUpdateSchema = Joi.object({
