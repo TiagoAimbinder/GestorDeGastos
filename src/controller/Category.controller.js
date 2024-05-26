@@ -88,7 +88,7 @@ export class CategoryController {
   }
 
   deleteCategory = async (req, res) => {
-    const { usu_id, cat_id} = req.params;
+    const { usu_id, cat_id } = req.params;
 
     try {
       const user = await User.findByPk(usu_id);

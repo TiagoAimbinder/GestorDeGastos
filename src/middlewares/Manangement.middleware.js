@@ -6,7 +6,7 @@ export class ManangementRequest {
     his_amount: Joi.number().required(),
     his_date: Joi.date().required(),
     his_description: Joi.string().required(),
-    his_type: Joi.string().valid("ingreso", "egreso").required(),
+    his_type: Joi.string().valid("Ingreso", "Egreso").required(),
     usu_id: Joi.number().required(),
     cur_id: Joi.number().required(),
   });
@@ -14,10 +14,6 @@ export class ManangementRequest {
   DeleteMovementSchema = Joi.object({
     id: Joi.number().required()
   });
-
-  GetAllMovementSchema= Joi.object({
-    usu_id: Joi.number().required(),
-  })
 
   paramsUpdateSchema = Joi.object({
     usu_id: Joi.number().integer().required(),
@@ -60,11 +56,4 @@ export class ManangementRequest {
     next(); 
   }
 
-  validateGetAll = (req, res, next) => {
-    const { error } = this.GetAllMovementSchema.validate(req.params);
-    if (error) {
-      return res.status(400).json({ message: error.details[0].message });
-    }
-    next();
-  }; 
 }

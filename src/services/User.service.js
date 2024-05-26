@@ -39,7 +39,7 @@ export class UserService {
       });
 
       // Creo el token y actualizo el usuario en la DB
-      const token = jwt.sign({username: user.usu_name}, process.env.SECRET_KEY, {expiresIn:'1h'});
+      const token = jwt.sign({username: user.usu_name}, process.env.SECRET_KEY, {expiresIn:'4h'});
       await User.update({usu_token: token}, {where: {usu_id: user.usu_id}});
 
       // Devuelvo el token al Front: 
