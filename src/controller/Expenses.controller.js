@@ -5,7 +5,7 @@ import { ExpensesService } from '../services/Expenses.service.js';
 export class ExpensesController {
 
   createExpenses = async (req, res) => {
-    const {usu_id, exp_name, exp_amount, exp_percentVta, cat_id } = req.body;
+    const { usu_id, exp_name, exp_amount, exp_percentVta, cat_id } = req.body;
     
     try {
       const user = await User.findOne({ where: { usu_id: usu_id }});
@@ -58,7 +58,7 @@ export class ExpensesController {
 
   updateExpense = async (req, res) => {
     const { exp_id, usu_id } = req.params;
-    const { exp_name, exp_amount, exp_percentVta, cat_id  } = req.body;
+    const { exp_name, exp_amount, exp_percentVta, cat_id } = req.body;
 
     try {
 

@@ -63,4 +63,31 @@ export class UserController {
       res.status(500).json({message: "Error de servidor | getAllUsers", error: err})
     }
   }
+
+  async validateToken (req, res) {
+    const { usu_id } = req.body;
+    const authHeaders = req.headers.authorization;
+
+    if(!authHeaders) {   
+        return res.status(400).json({message: "No se ha enviado ningun token."});
+    }           
+
+    const usu_token = authHeaders.split(' ')[1]; 
+
+    try {
+        const user = await User.findOne({where: {usu_id}});
+        if (!user) {
+            return res.status(400).json({message: "No existe un usuario registrado con ese ID."});
+        }; 
+
+        if (usu_token !== user.dataValues.usu_token) {
+            await User.update({usu_token: null}, {where: {usu_id: usu_id}});
+            return res.status(400).json({message: "El token ingresado no coincide con el token registrado."});
+        };
+        res.status(200).json({valid: true})
+    } 
+    catch(err) {
+        res.status(500).json({ message: "Error de servidor | validateToken - Controller", error: err });
+    } 
+  };
 }
