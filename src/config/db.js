@@ -8,7 +8,7 @@ const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
 
 const sequelize = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
-  dialect: 'mssql',
+  dialect: 'mysql',
   dialectOptions: {
   options: {
       encrypt: false,
@@ -40,6 +40,9 @@ const User = UserModel(sequelize);
 import ManangementHistoryModel from '../models/ManangementHistory.model.js';
 const ManangementHistory = ManangementHistoryModel(sequelize); 
 
+import ManangementWeekModel from '../models/ManangementWeek.model.js';
+const ManangementWeek = ManangementWeekModel(sequelize); 
+
 import CurrencyTypeModel from '../models/CurrencyType.model.js';
 const CurrencyType = CurrencyTypeModel(sequelize); 
 
@@ -63,10 +66,12 @@ sequelize.sync({alter : true}) // {alter : true} | alter: Actualiza las tablas c
 
 export {
   tryConnection,
+  sequelize,
   User, 
   ManangementHistory,
   CurrencyType,
   LogHistory,
   Expenses,
-  Category
+  Category,
+  ManangementWeek
 }
