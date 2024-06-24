@@ -43,7 +43,7 @@ export class UserService {
       await User.update({usu_token: token}, {where: {usu_id: user.usu_id}});
 
       // Devuelvo el token al Front: 
-      const result = { message: "Login correcto", token: token, usu_id: user.usu_id};
+      const result = { message: "Login correcto", token: token, usu_id: user.usu_id, role_id: user.role_id};
       return result; 
     } 
     catch(err) {
