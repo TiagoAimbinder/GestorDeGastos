@@ -12,7 +12,11 @@ export default (sequelize)  => {
       cat_name: {
         type: DataTypes.STRING,
         allowNull: false,
-      }, 
+      },
+      cat_color: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      }
     },
     {
         sequelize,

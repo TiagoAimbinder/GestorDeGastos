@@ -5,10 +5,12 @@ export class CategoryRequest {
   CreateCategorySchema = Joi.object({
     usu_id: Joi.number().required(),
     cat_name: Joi.string().required(),
+    cat_color: Joi.string().required().allow(null),
   });
 
   UpdateCategorySchema = Joi.object({
     cat_name: Joi.string().required(),
+    cat_color: Joi.string().required().allow(null),
   });
 
   paramsUpdateCategorySchema = Joi.object({

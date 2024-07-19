@@ -6,7 +6,7 @@ export class CategoryController {
 
   createCategory = async (req, res) => {
 
-    const { usu_id, cat_name } = req.body; 
+    const { usu_id, cat_name, cat_color } = req.body; 
 
     try {
       const user = await User.findByPk(usu_id);
@@ -27,8 +27,10 @@ export class CategoryController {
         return res.status(400).json({ message: 'La categoría ya existe' });
       }
 
+      cat_color === null ? cat_color = "#FFFFFF" : null;
+      
       const categoryService = new CategoryService()
-      const result = await categoryService.createCategory(cat_name);
+      const result = await categoryService.createCategory(cat_name, cat_color);
       res.status(201).json(result);
     } 
     catch (err) {
@@ -38,7 +40,7 @@ export class CategoryController {
 
   updateCategory = async (req, res) => {
     const { cat_id, usu_id } = req.params;
-    const { cat_name } = req.body;
+    const { cat_name, cat_color } = req.body;
 
     try {
 
@@ -56,8 +58,10 @@ export class CategoryController {
       if (!category) {
         return res.status(404).json({ message: 'La categoría no existe' });
       }
+
+      cat_color === null ? cat_color = category.dataValues.cat_color:null;
       const categoryService = new CategoryService()
-      const result = await categoryService.updateCategory({cat_id, cat_name});
+      const result = await categoryService.updateCategory({cat_id, cat_name, cat_color});
       res.status(200).json(result);
       
     } catch (err) {
@@ -74,10 +78,10 @@ export class CategoryController {
         return res.status(404).json({ message: 'El usuario no existe' });
       };
 
-      if (user.dataValues.role_id !== 1) {
-        res.status(401).json({message: "El usuario no tiene permisos para obtener las categorías."});
-        return;
-      };
+      // if (user.dataValues.role_id !== 1) {
+      //   res.status(401).json({message: "El usuario no tiene permisos para obtener las categorías."});
+      //   return;
+      // };
 
       const categories = await Category.findAll();
       return res.status(200).json({message: "Categorias encontradas", categories: categories});
