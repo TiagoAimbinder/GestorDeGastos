@@ -8,11 +8,12 @@ const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
 
 const sequelize = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
-  dialect: 'mysql',
+  // dialect: 'mysql',
+  dialect: 'mssql',
   dialectOptions: {
   options: {
       encrypt: false,
-      // tdsVersion: '8_0', 
+      tdsVersion: '8_0', 
   },
   },
   logging: false, // Bloquear los mensajes de Sequelize en la consola.
@@ -52,6 +53,9 @@ const Expenses = ExpensesModel(sequelize);
 import CategoryModel from '../models/Category.model.js'; 
 const Category = CategoryModel(sequelize);
 
+import SaleHistoryModel from '../models/SaleHistory.model.js';
+const SaleHistory = SaleHistoryModel(sequelize);
+
 
 sequelize.sync({alter : true}) // {alter : true} | alter: Actualiza las tablas creadas de las bases de datos. 
     .then(() => {
@@ -68,5 +72,7 @@ export {
   CurrencyType,
   LogHistory,
   Expenses,
-  Category
+  SaleHistory,
+  Category,
+  sequelize
 }

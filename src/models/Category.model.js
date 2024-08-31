@@ -13,6 +13,10 @@ export default (sequelize)  => {
         type: DataTypes.STRING,
         allowNull: false,
       }, 
+      cat_color: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      }
     },
     {
         sequelize,
