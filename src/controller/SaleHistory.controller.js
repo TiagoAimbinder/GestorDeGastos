@@ -31,8 +31,6 @@ export class SaleHistoryController {
     catch (err) {
       res.status(500).json({ message: 'Error del servidor: Error al obtener las ventas mensuales.', err: err})
     }
-
-
   }; 
 
 }
