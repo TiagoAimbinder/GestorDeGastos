@@ -18,9 +18,9 @@ export class ExpensesController {
         return res.status(404).json({ message: 'Categoria no encontrada' });
       }; 
 
-      if (user.dataValues.role_id !== 1) {
-        return res.status(401).json({ message: 'No tiene permisos para crear gastos' });
-      }
+      // //if (user.dataValues.role_id !== 1) {
+      //   return res.status(401).json({ message: 'No tiene permisos para crear gastos' });
+      // }
 
       const expensesService = new ExpensesService();
       const result = await expensesService.createExpenses({exp_name, exp_amount, exp_percentVta, cat_id});
@@ -42,10 +42,10 @@ export class ExpensesController {
         return res.status(404).json({message: "El usuario no existe"});
       } 
 
-      if (user.dataValues.role_id !== 1) {
-        res.status(401).json({message: "El usuario no tiene permisos para obtener las categorías."});
-        return;
-      };
+      // if (user.dataValues.role_id !== 1) {
+      //   res.status(401).json({message: "El usuario no tiene permisos para obtener las categorías."});
+      //   return;
+      // };
 
       const expenses = await Expenses.findAll();
       res.status(200).json({message: "Gastos encontrados", expenses: expenses}  );
@@ -67,10 +67,10 @@ export class ExpensesController {
         return res.status(404).json({ message: 'El usuario no existe' });
       };
 
-      if (user.dataValues.role_id !== 1) {
-        res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
-        return;
-      };
+      // if (user.dataValues.role_id !== 1) {
+      //   res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
+      //   return;
+      // };
 
       const category = await Category.findByPk(cat_id);
       if (!category) {
@@ -102,9 +102,9 @@ export class ExpensesController {
         return res.status(404).json({ message: 'El usuario no existe' });
       };
   
-      if (user.dataValues.role_id !== 1) {
-        return res.status(401).json({message: "El usuario no tiene permisos para eliminar este gasto."});;
-      };
+      // if (user.dataValues.role_id !== 1) {
+      //   return res.status(401).json({message: "El usuario no tiene permisos para eliminar este gasto."});;
+      // };
   
       const expense = await Expenses.findByPk(exp_id);
       if (!expense) {
