@@ -25,6 +25,10 @@ export default (sequelize)  => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      sal_type: {
+        type: DataTypes.INTEGER, 
+        allowNull: true,
+      },
     },
     {
         sequelize,
