@@ -14,10 +14,10 @@ export class CategoryController {
         return res.status(404).json({ message: 'El usuario no existe' });
       };
 
-      if (user.dataValues.role_id !== 1) {
-        res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
-        return;
-      };
+      // if (user.dataValues.role_id !== 1) {
+      //   res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
+      //   return;
+      // };
 
       const categoryByName = await Category.findOne({
         where: where(fn('LOWER', col('cat_name')), cat_name.toLowerCase())
@@ -49,10 +49,10 @@ export class CategoryController {
         return res.status(404).json({ message: 'El usuario no existe' });
       };
 
-      if (user.dataValues.role_id !== 1) {
-        res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
-        return;
-      };
+      // if (user.dataValues.role_id !== 1) {
+      //   res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
+      //   return;
+      // };
 
       const category = Category.findByPk(cat_id);
       if (!category) {
@@ -101,9 +101,9 @@ export class CategoryController {
         return res.status(404).json({ message: 'El usuario no existe' });
       };
 
-      if (user.dataValues.role_id !== 1) {
-        return res.status(401).json({message: "El usuario no tiene permisos para eliminar la categoría."});;
-      };
+      // if (user.dataValues.role_id !== 1) {
+      //   return res.status(401).json({message: "El usuario no tiene permisos para eliminar la categoría."});;
+      // };
 
       const category = await Category.findByPk(cat_id);
       if (!category) {
