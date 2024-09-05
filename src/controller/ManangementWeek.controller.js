@@ -104,7 +104,7 @@ import { ManangementWeekService } from "../services/ManangementWeek.service.js";
             }
 
             if (Number(usu_id) !== 5) {
-                console.log(usu_id)
+                // console.log(usu_id)
                 return res.status(401).json({ message: 'No tiene permisos para realizar esta accion'});
             }
             const manangementWeekService = new ManangementWeekService();

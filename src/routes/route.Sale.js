@@ -10,4 +10,4 @@ routeSale.post('/create', saleHistoryCtr.createSale);
 routeSale.get('/getMonthly', saleHistoryCtr.getMonthlySales);
 
 
-export { routeSale }; 
+export default routeSale; 

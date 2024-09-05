@@ -25,10 +25,6 @@ export default (sequelize)  => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      sal_amount: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
     },
     {
         sequelize,
