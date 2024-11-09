@@ -5,7 +5,7 @@ export class CategoryService {
 
   createCategory = async (cat_name, cat_color) =>  {
     try {
-      const createdCategory = await Category.create({ cat_name: cat_name, cat_color: cat_color });
+      const createdCategory = await Category.create({ cat_name: cat_name });
       return {message: "Categoría creada correctamente", category: createdCategory}
     }
     catch (err) {
@@ -15,7 +15,7 @@ export class CategoryService {
 
   updateCategory = async (cat) => {
     try {
-      const updateCategory = await Category.update({cat_name: cat.cat_name, cat_color: cat.cat_color},{ where: {cat_id: cat.cat_id}});
+      const updateCategory = await Category.update({cat_name: cat.cat_name},{ where: {cat_id: cat.cat_id}});
       return {message: "Categoría actualizada correctamente"}
     }
     catch (err) {

@@ -6,7 +6,7 @@ export class CategoryController {
 
   createCategory = async (req, res) => {
 
-    const { usu_id, cat_name, cat_color } = req.body; 
+    const { usu_id, cat_name} = req.body; 
 
     try {
       const user = await User.findByPk(usu_id);
@@ -27,10 +27,10 @@ export class CategoryController {
         return res.status(400).json({ message: 'La categoría ya existe' });
       }
 
-      cat_color === null ? cat_color = "#FFFFFF" : null;
+      // cat_color === null ? cat_color = "#FFFFFF" : null;
       
       const categoryService = new CategoryService()
-      const result = await categoryService.createCategory(cat_name, cat_color);
+      const result = await categoryService.createCategory(cat_name);
       res.status(201).json(result);
     } 
     catch (err) {
@@ -40,7 +40,7 @@ export class CategoryController {
 
   updateCategory = async (req, res) => {
     const { cat_id, usu_id } = req.params;
-    const { cat_name, cat_color } = req.body;
+    const { cat_name } = req.body;
 
     try {
 
@@ -59,9 +59,9 @@ export class CategoryController {
         return res.status(404).json({ message: 'La categoría no existe' });
       }
 
-      cat_color === null ? cat_color = category.dataValues.cat_color:null;
+      // cat_color === null ? cat_color = category.dataValues.cat_color:null;
       const categoryService = new CategoryService()
-      const result = await categoryService.updateCategory({cat_id, cat_name, cat_color});
+      const result = await categoryService.updateCategory({cat_id, cat_name});
       res.status(200).json(result);
       
     } catch (err) {
