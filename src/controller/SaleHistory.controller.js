@@ -12,7 +12,7 @@ export class SaleHistoryController {
     try {
       const user = await User.findOne({ where: { usu_id: usu_id } }); 
       if (!user) { return res.status(400).json({ message: 'No existe un usuario registrado con ese ID.' })}; 
-      if (user.dataValues.role_id !== 1) { return res.status(400).json({ message: 'No tienes permisos para realizar esta acción.' })};
+      // if (user.dataValues.role_id !== 1) { return res.status(400).json({ message: 'No tienes permisos para realizar esta acción.' })};
       if (sal_quantity < 0) { return res.status(400).json({ message: 'El tipo de venta no puede ser negativo.' }); } 
 
       const result = await this.saleHistorySrv.createSale(usu_id, sal_name, sal_quantity, sal_type); 

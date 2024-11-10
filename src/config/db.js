@@ -73,6 +73,7 @@ export {
   sequelize,
   User, 
   ManangementHistory,
+  ManangementWeek,
   CurrencyType,
   LogHistory,
   Expenses,
