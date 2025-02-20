@@ -29,6 +29,7 @@ export class Database {
     this.DB_DATABASE = DB_DATABASE;
   };
 
+  // Add prod environment -> dev: mssql | prod: mysql
   sequelizeInit = () => {
     Database.sequelize = new Sequelize(this.DB_DATABASE, this.DB_USER, this.DB_PASSWORD, {
       host: this.DB_HOST,
@@ -65,7 +66,7 @@ export class Database {
         SaleHistory: SaleHistoryModel(Database.sequelize),
       };
     } catch (err) {
-      console.error('❌ | Init models', error);
+      console.error('❌ | Init models', err);
     }
   }; 
 

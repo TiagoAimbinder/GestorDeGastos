@@ -12,7 +12,6 @@ import { RouteIndex } from "../routes/route.Index.js";
 
 export class Server {
 
-
   constructor() {
     dotenvConfig();
 
@@ -21,26 +20,32 @@ export class Server {
     this.ENV = process.env.NODE_ENV; 
   }
 
-  appConfig = () => {
-    const APP = express();
-    const CORS_OPTIONS = this.config.getCorsOptions();
 
-    const APP_PARAMS = [
+  APP_PARAMS = () => {
+    const CORS_OPTIONS = this.config.getCorsOptions();
+    const ROUTE_INDEX = this.ROUTE_INDEX.routesInit()
+
+    return [
       cors(CORS_OPTIONS),
       express.json(),
       express.urlencoded({ extended: true }),
       helmet(),
       bodyParser.json(),
-      this.ROUTE_INDEX.routesInit()
-    ];  
+      ROUTE_INDEX, 
+    ]
+  }
 
-    for (const PARAM of APP_PARAMS) { APP.use(PARAM); }
 
+  appConfig = () => {
+    const APP = express();
+    for (const PARAM of this.APP_PARAMS()) { APP.use(PARAM); }
     return APP;
   }
 
+
   create = () => {
-    const SERVER = process.env.NODE_ENV === 'dev' ? http.createServer(this.appConfig()) : https.createServer(this.appConfig());
+    // const SERVER = process.env.NODE_ENV === 'dev' ? http.createServer(this.appConfig()) : https.createServer(this.appConfig());
+    const SERVER = http.createServer(this.appConfig());
     const PORT = this.ENV.PORT;
     SERVER.listen(PORT, () => { console.log(`✅ | Express Server | PORT: ${PORT} `);});
 };

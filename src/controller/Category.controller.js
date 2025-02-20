@@ -1,93 +1,50 @@
-import { User, Category } from '../config/db.js'
-import { CategoryService } from '../services/Category.service.js';
-import { where, fn, col } from 'sequelize';
+import { CategorySrv } from '../services/Category.service.js';
 
 export class CategoryController {
 
-  createCategory = async (req, res) => {
+  constructor() {
+    this.CategorySrv = new CategorySrv()
+  }; 
+  
+  /**
+  * REFACTORIZED: 
+  * - ✅ | Create category 
+  * - ✅ | Update category 
+  * - ✅ | Get all categories 
+  * - ✅ | Delete category 
+  */
 
+  createCategory = async (req, res) => {
     const { usu_id, cat_name, cat_color } = req.body; 
 
     try {
-      const user = await User.findByPk(usu_id);
-      if (!user) {
-        return res.status(404).json({ message: 'El usuario no existe' });
-      };
-
-      // if (user.dataValues.role_id !== 1) {
-      //   res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
-      //   return;
-      // };
-
-      const categoryByName = await Category.findOne({
-        where: where(fn('LOWER', col('cat_name')), cat_name.toLowerCase())
-      });
-
-      if (categoryByName) {
-        return res.status(400).json({ message: 'La categoría ya existe' });
-      }
-
-      const finalColor = cat_color === null ? "#FFFFFF" : cat_color;
-      
-      const categoryService = new CategoryService()
-      const result = await categoryService.createCategory(cat_name, finalColor);
-      res.status(201).json(result);
-    } 
-    catch (err) {
-      res.status(500).json({ message: 'Error del servidor | createCategory - Controller', error: err.message });
+      await this.CategorySrv.create(usu_id, cat_name, cat_color); 
+      res.status(201).json({ message: 'Categoría creada correctamente.', success: true, code: '' });
+    } catch (err) {
+      res.status(err.statusCode || 500).json({ message: err.message || 'Error al crear la categoría.', success: false, code: ''});
     }
   };
 
   updateCategory = async (req, res) => {
-    const { cat_id, usu_id } = req.params;
-    const { cat_name, cat_color } = req.body;
+    const { cat_id, usu_id, cat_name, cat_color } = req.body;
 
     try {
-
-      const user = await User.findByPk(usu_id);
-      if (!user) {
-        return res.status(404).json({ message: 'El usuario no existe' });
-      };
-
-      // if (user.dataValues.role_id !== 1) {
-      //   res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
-      //   return;
-      // };
-
-      const category = Category.findByPk(cat_id);
-      if (!category) {
-        return res.status(404).json({ message: 'La categoría no existe' });
-      }
-
-      cat_color === null ? cat_color = category.dataValues.cat_color:null;
-      const categoryService = new CategoryService()
-      const result = await categoryService.updateCategory({cat_id, cat_name, cat_color});
-      res.status(200).json(result);
-      
+      const data = { cat_id, usu_id, cat_name, cat_color }; 
+      await this.CategorySrv.update(data);
+      res.status(200).json({ message: 'Categoría actualizada correctamente', success: true, code: '' });
     } catch (err) {
-      res.status(500).json({ message: 'Error del servidor | updateCategory - Controller', error: err.message });
+      res.status(err.statusCode || 500).json({ message: err.message || 'Error al actualizar la categoría', success: false, code: '' })
     }
   }
 
   getAllCategories = async (req, res) => {
     const { usu_id } = req.params
+
     try {
-      const user = await User.findByPk(usu_id);
-
-      if (!user) {
-        return res.status(404).json({ message: 'El usuario no existe' });
-      };
-
-      // if (user.dataValues.role_id !== 1) {
-      //   res.status(401).json({message: "El usuario no tiene permisos para obtener las categorías."});
-      //   return;
-      // };
-
-      const categories = await Category.findAll();
-      return res.status(200).json({message: "Categorias encontradas", categories: categories});
-
+      const categories = await this.CategorySrv.getAll(usu_id);
+      res.status(200).json({ message: 'Categorías obtenidas correctamente', success: true, code: '', categories: categories })
     } catch (err) {
-      res.status(500).json({ message: 'Error del servidor | getAllCategories - Controller', error: err.message });
+      res.status(err.statusCode || 500).json({ message: err.message || 'Error al obtener las categorías', success: false, code: '' })
     }
   }
 
@@ -95,27 +52,10 @@ export class CategoryController {
     const { usu_id, cat_id } = req.params;
 
     try {
-      const user = await User.findByPk(usu_id);
-
-      if (!user) {
-        return res.status(404).json({ message: 'El usuario no existe' });
-      };
-
-      // if (user.dataValues.role_id !== 1) {
-      //   return res.status(401).json({message: "El usuario no tiene permisos para eliminar la categoría."});;
-      // };
-
-      const category = await Category.findByPk(cat_id);
-      if (!category) {
-        return res.status(404).json({ message: 'La categoría no existe' });
-      }
-
-      const categoryService = new CategoryService(); 
-      const result = await categoryService.deleteCategory(cat_id);
-      res.status(200).json(result); 
-
-    } catch(err) {
-      res.status(500).json({ message: 'Error del servidor | deleteCategory - Controller', error: err.message });
+      await this.CategorySrv.deleteCategory(usu_id, cat_id);
+      res.status(200).json({ message: 'Categoría eliminada correctamente', success: true, code: '' });
+    } catch (err) {
+      res.status(err.statusCode || 500).json({ message: err.message || 'Error al eliminar la categoría', success: false, code: '' })
     }
   }
 }; 

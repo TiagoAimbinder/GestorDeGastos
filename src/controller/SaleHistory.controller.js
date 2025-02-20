@@ -1,4 +1,3 @@
-import { QueryTypes } from "sequelize";
 import { User, sequelize } from "../config/db.js";
 import { SaleHistoryService } from "../services/SaleHistory.service.js";
 
