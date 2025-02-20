@@ -32,7 +32,7 @@ export class UserRep {
 
     /**
      * On get all can pass the params: 
-     * @param {Array} params (Params that we want)
+     * @param {Array} params (Params that you want)
      */
     getAll = async (params, transaction = null) => {
         const users = await this.models.User.findAll({
