@@ -8,11 +8,34 @@ import routeSale from "./route.Sale.js"
 
 const routeIndex = Router(); 
 
-routeIndex.use('/user', routeUser);
-routeIndex.use('/manangement', routeManangement);
-routeIndex.use('/category', routeCategory);
-routeIndex.use('/expenses', routeExpenses);
-routeIndex.use('/currency', routeCurrency);
-routeIndex.use('/saleHistory', routeSale);
+
+
+
+
+
+
 
 export default routeIndex;
+
+
+/* NEW ROUTE INDEX */
+
+export class RouteIndex {
+
+
+  constructor() {
+    this.routeIndex = Router();
+  } 
+
+  routesInit = () => {
+    routeIndex.use('/user', routeUser);
+    routeIndex.use('/manangement', routeManangement);
+    routeIndex.use('/category', routeCategory);
+    routeIndex.use('/expenses', routeExpenses);
+    routeIndex.use('/currency', routeCurrency);
+    routeIndex.use('/saleHistory', routeSale);
+
+    return routeIndex;
+  };
+
+}

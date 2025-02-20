@@ -27,10 +27,10 @@ export class CategoryController {
         return res.status(400).json({ message: 'La categoría ya existe' });
       }
 
-      cat_color === null ? cat_color = "#FFFFFF" : null;
+      const finalColor = cat_color === null ? "#FFFFFF" : cat_color;
       
       const categoryService = new CategoryService()
-      const result = await categoryService.createCategory(cat_name, cat_color);
+      const result = await categoryService.createCategory(cat_name, finalColor);
       res.status(201).json(result);
     } 
     catch (err) {

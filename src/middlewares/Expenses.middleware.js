@@ -3,7 +3,6 @@ import Joi from 'joi';
 
 export class ExpensesRequest {
 
-
   CreateExpenseSchema = Joi.object({
     usu_id: Joi.number().required(),
     exp_name: Joi.string().required(),
