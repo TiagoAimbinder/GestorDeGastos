@@ -12,7 +12,7 @@ export class ExpensesController {
    * --- REFACTORIZED ---
    * - ✅ | Create expense
    * - ✅ | Get all expenses
-   * -  | Update expense
+   * - ✅ | Update expense
    * -  | Delete expense
    */
 
@@ -40,68 +40,25 @@ export class ExpensesController {
   }
 
 
-
-  updateExpense = async (req, res) => {
-    const { exp_id, usu_id } = req.params;
-    const { exp_name, exp_amount, exp_percentVta, cat_id } = req.body;
-
+  update = async (req, res) => {
+    const { exp_id, usu_id } = req.params; 
+    const { exp_name, exp_amount, exp_percentVta, cat_id } = req.body; 
+    const exp = { exp_name, exp_amount, exp_percentVta, cat_id };
     try {
-
-      const user = await User.findByPk(usu_id);
-      if (!user) {
-        return res.status(404).json({ message: 'El usuario no existe' });
-      };
-
-      // if (user.dataValues.role_id !== 1) {
-      //   res.status(401).json({message: "El usuario no tiene permisos para crear categorías."});
-      //   return;
-      // };
-
-      const category = await Category.findByPk(cat_id);
-      if (!category) {
-        return res.status(404).json({ message: 'La categoría no existe.' });
-      };
-
-      const expense = Expenses.findByPk(exp_id);
-      if (!expense) {
-        return res.status(404).json({ message: 'El gasto no existe.' });
-      }
-
-      const expensesService = new ExpensesService()
-      const result = await expensesService.updateExpense(exp_id, {exp_name, exp_amount, exp_percentVta, cat_id });
-      res.status(200).json(result);
-
+      await this.ExpensesSrv.updateExpense(exp_id, usu_id, exp);
+      res.status(200).json({ message: 'Gasto actualizado correctamente', success: true, code: ''})
     } catch (err) {
-      res.status(500).json({ message: 'Error del servidor | updateCategory - Controller', error: err.message });
+      res.status( err.statusCode || 500).json({ message: err.message || 'Error al actualizar el gasto', success: false, code: err.code || '' });
     }
+  }
 
-  }; 
-
-  deleteExpense = async (req, res) => {
+  delete = async (req, res) => {
     const { usu_id, exp_id } = req.params; 
-
     try {
-      const user = await User.findByPk(usu_id);
-
-      if (!user) {
-        return res.status(404).json({ message: 'El usuario no existe' });
-      };
-  
-      // if (user.dataValues.role_id !== 1) {
-      //   return res.status(401).json({message: "El usuario no tiene permisos para eliminar este gasto."});;
-      // };
-  
-      const expense = await Expenses.findByPk(exp_id);
-      if (!expense) {
-        return res.status(404).json({ message: 'El gasto no existe' });
-      }
-
-      const expenseService = new ExpensesService();
-      const result = await expenseService.deleteExpense(exp_id);
-      res.status(200).json({result}); 
-
+      await this.ExpensesSrv.delete(usu_id, exp_id);
+      res.status(200).json({ message: 'Gasto eliminado correctamente', success: true, code: '' });
     } catch (err) {
-      res.status(500).json({ message: 'Error del servidor | deleteExpense - Controller', error: err.message });
+      res.status( err.statusCode || 500).json({ message: err.message || 'Error al eliminar el gasto', success: false, code: err.code || '' });
     }
-  }; 
+  }
 };

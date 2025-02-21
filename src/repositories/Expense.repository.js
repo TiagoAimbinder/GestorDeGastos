@@ -19,4 +19,11 @@ export class ExpenseRep {
         return expenses.map(expense => expense.dataValues)
     }
 
+    update = async (expense, exp_id, transaction = null) => {
+        return await this.models.Expenses.update(expense, { where: {exp_id}, transaction });
+    }
+
+    delete = async (exp_id, transaction = null) => {
+        return await this.models.Expenses.destroy({ where: { exp_id }, transaction });
+    }
 }
