@@ -13,7 +13,7 @@ export class ExpensesController {
    * - ✅ | Create expense
    * - ✅ | Get all expenses
    * - ✅ | Update expense
-   * -  | Delete expense
+   * - ✅ | Delete expense
    */
 
 

@@ -1,50 +1,39 @@
-import { ManangementHistory } from '../config/db.js';
 import { ManangementService } from '../services/Manangement.service.js' 
 
 export class ManangementController {
 
-  createMovement = async (req, res) => {
+  constructor () {
+    this.ManangementSrv = new ManangementService(); 
+  }
+
+  create = async (req, res) => {
     const { his_amount, his_description, his_type, usu_id, cur_id, his_date} = req.body;
-
-    // Validacion para que his_amount solo sea un número positivo mayor a 0
-    if (typeof his_amount !== 'number' || isNaN(his_amount) || his_amount <= 0) {
-      return res.status(400).json({ message: "Monto debe ser numero positivo" });
-    }
-
     const movement = { his_amount, his_description, his_type, usu_id, cur_id, his_date };
+
     try {
-      const manangementService = new ManangementService();
-      const result = await manangementService.createMovement(movement);
-      res.status(201).json(result)
-    } 
-    catch (err) {
-      res.status(500).json({ message: "Error de servidor | createMovement", error: err });
-    }
+      await this.ManangementSrv.create(movement);
+      res.status(200).json({ message: 'Movimiento creado correctamente', success: true, code: ''})
+    } catch (err) {
+      res.status(err.statusCode || 500).json({ message: 'Error al crear el movimiento', success: false, code: err.code || ''})
+    }    
   }; 
 
-  getAllMovements = async (req, res) => {
-
+  getAll = async (req, res) => {
     try {
-      // Consulta todos los movimientos de la base de datos
-      const manangement = await ManangementHistory.findAll({ where: { his_status: 1 } });
-
-      res.status(200).json({manangement: manangement});
-    } catch (error) {
-
-      console.error('Error al obtener los movimientos:', error);
-      res.status(500).json({ message: 'Error al obtener los movimientos', error });
+      const movements = await this.ManangementSrv.getAll();
+      res.status(200).json({ message: 'Movimientos obtenidos correctamente', success: true, code: '', manangement: movements })
+    } catch (err) {
+      res.status(err.statusCode || 500).json({ message: 'Error al obtener los movimientos', success: false, code: err.code || ''})
     }
   };
 
-  deleteMovement = async (req, res) => {
+  delete = async (req, res) => {
     const { id } = req.params;
     try {
-      await ManangementHistory.update({ his_status: false }, { where: { his_id: id } });
-
-      res.status(200).json({ message: "Movimiento eliminado correctamente" });
-    } catch (error) {
-      console.error("Error al eliminar movimiento:", error);
-      res.status(500).json({ message: "Error al eliminar movimiento", error });
+      await this.ManangementSrv.delete(id);
+      res.status(200).json({ message: 'Movimiento eliminado correctamente', success: true, code: '' })
+    } catch (err) {
+      res.status(err.statusCode || 500).json({ message: 'Error al eliminar el movimiento', success: false, code: err.code || ''})
     }
   };
 
