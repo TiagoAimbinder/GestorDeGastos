@@ -16,6 +16,10 @@ export class ManangementRep {
         )    
     }; 
 
+    insertData = async (generalData, transaction = null) => {
+        await this.models.ManangementHistory.bulkCreate(generalData, { transaction });
+    }
+
     getAll = async () => {
         const movs = this.models.ManangementHistory.findAll({ where: { his_status: 1 } })
         return movs.map( (mov) => mov.dataValues)
@@ -37,6 +41,11 @@ export class ManangementRep {
             }
         )
     };
+
+    findByID = async (his_id, transaction = null) => {
+        const movement = await this.models.ManangementHistory.findOne({ where: { his_id }, transaction })
+        return movement ? movement.dataValues : null; 
+    }; 
 
 
 }
