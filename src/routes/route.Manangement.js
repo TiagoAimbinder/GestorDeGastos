@@ -3,15 +3,22 @@ import { ManangementController } from "../controller/Manangement.controller.js"
 import { ManangementRequest } from "../middlewares/Manangement.middleware.js"
 import { authJWT } from "../config/utils.js"
 
-const routeManangement = Router();
-const manangementController = new ManangementController(); 
-const manangementRequest = new ManangementRequest(); 
 
+export class RouteManangement {
 
-routeManangement.post("/create", authJWT, manangementRequest.validateCreate, manangementController.createMovement)
-routeManangement.get("/getAll", authJWT, manangementController.getAllMovements )
-routeManangement.put("/update/:his_id/:usu_id", authJWT, manangementRequest.validateUpdate ,manangementController.updateMovement);
-routeManangement.put("/delete/:id", authJWT, manangementRequest.validateDelete, manangementController.deleteMovement );
+  constructor() {
+    this.ManangementReq = new ManangementRequest();
+    this.ManangementCtr = new ManangementController();
 
+    this.routeManangement = Router();
+  }
 
-export default routeManangement
+  routesInit = () => {
+    this.routeManangement.post("/create", authJWT, this.ManangementReq.validateCreate, this.ManangementCtr.create)
+    this.routeManangement.get("/getAll", authJWT, this.ManangementCtr.getAll)
+    this.routeManangement.put("/update/:his_id/:usu_id", authJWT, this.ManangementReq.validateUpdate, this.ManangementCtr.updateMovement);
+    this.routeManangement.put("/delete/:id", authJWT, this.ManangementReq.validateDelete, this.ManangementCtr.delete);
+    return this.routeManangement;
+  }
+
+}

@@ -6,9 +6,7 @@ import bodyParser from 'body-parser';
 
 import { config as dotenvConfig } from 'dotenv'; 
 import { Configuration } from './config.js';
-import * as https from 'https';
 import { RouteIndex } from "../routes/route.Index.js";
-// import { GeneralMwr } from '../middlewares/general.middleware.js';
 
 export class Server {
 
@@ -22,7 +20,7 @@ export class Server {
 
 
   APP_PARAMS = () => {
-    const CORS_OPTIONS = this.config.getCorsOptions();
+    const CORS_OPTIONS = this.config.getCorsOptions;
     const ROUTE_INDEX = this.ROUTE_INDEX.routesInit()
 
     return [
@@ -44,9 +42,8 @@ export class Server {
 
 
   create = () => {
-    // const SERVER = process.env.NODE_ENV === 'dev' ? http.createServer(this.appConfig()) : https.createServer(this.appConfig());
     const SERVER = http.createServer(this.appConfig());
-    const PORT = this.ENV.PORT;
+    const PORT = this.config.config[this.ENV].PORT;
     SERVER.listen(PORT, () => { console.log(`✅ | Express Server | PORT: ${PORT} `);});
 };
 

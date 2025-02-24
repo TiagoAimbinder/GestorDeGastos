@@ -21,8 +21,9 @@ export class Database {
   constructor() {
     dotEnvConfig(); 
     this.config = new Configuration();
+    this.ENV = process.env.NODE_ENV || 'dev';
 
-    const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = this.config.DBConecction;
+    const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = this.config.DBConecction[this.ENV];
     this.DB_HOST = DB_HOST;
     this.DB_USER = DB_USER;
     this.DB_PASSWORD = DB_PASSWORD;

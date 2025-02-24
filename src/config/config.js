@@ -1,6 +1,11 @@
+import { config as dotenvConfig } from 'dotenv'; 
+
+
 export class Configuration {
 
   constructor() {
+    dotenvConfig();
+    
     this.ENV = process.env.NODE_ENV || 'dev';
   }; 
 

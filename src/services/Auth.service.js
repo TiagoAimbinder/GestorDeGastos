@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { JWTSrv } from '../services/Jwt.service.js';
 import { UserRep } from '../repositories/User.repository.js';
 import { LogHistoryRep } from '../repositories/LogHistory.repository.js';
-import { Database } from 'sqlite3';
+import { Database } from '../config/db.js';
 
 
 export class AuthSrv { 
