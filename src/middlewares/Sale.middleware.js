@@ -7,7 +7,8 @@ export class SaleHistoryMiddleware {
     usu_id: Joi.number().positive().required(), 
     sal_name: Joi.string().required(), 
     sal_quantity: Joi.number().positive().required(), 
-    sal_type: Joi.number().valid(1, 2)
+    sal_type: Joi.number().valid(1, 2),
+    sal_local: Joi.number().valid(1, 2)
   });
 
   static UsuIdSchema = Joi.object({
