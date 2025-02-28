@@ -10,6 +10,7 @@ import { RouteSale } from "./route.Sale.js";
 
 export class RouteIndex {
 
+
   constructor() {
     this.routeCategory = new RouteCategory();
     this.routeUser = new RouteUser()
