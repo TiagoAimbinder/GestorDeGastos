@@ -1,6 +1,6 @@
+import { col, fn, where } from "sequelize";
 import { Database } from "../config/db.js";
 import { encryptData } from '../config/utils.js'
-
 
 export class UserRep {
 
@@ -27,7 +27,7 @@ export class UserRep {
     }
 
     updateToken = async (usu_id, usu_token, transaction = null) => {
-        await this.models.User.update({ usu_token }, { where: { usu_id }, transaction });
+        await this.models.User.update(usu_token , { where: { usu_id }, transaction });
     }
 
     /**

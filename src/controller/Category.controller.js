@@ -26,7 +26,8 @@ export class CategoryController {
   };
 
   updateCategory = async (req, res) => {
-    const { cat_id, usu_id, cat_name, cat_color } = req.body;
+    const { cat_name, cat_color } = req.body;
+    const { cat_id, usu_id } = req.params
 
     try {
       const data = { cat_id, usu_id, cat_name, cat_color }; 

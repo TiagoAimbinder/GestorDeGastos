@@ -1,3 +1,4 @@
+import { col, fn, where } from "sequelize";
 import { Database } from "../config/db.js"
 
 

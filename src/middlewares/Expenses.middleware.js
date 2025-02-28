@@ -16,8 +16,8 @@ export class ExpensesRequest {
   })
 
   paramsSchema = Joi.object({
-    usu_id: Joi.number().required(),
-    exp_id: Joi.number().required(),
+    usu_id: Joi.string().required(),
+    exp_id: Joi.string().required(),
   })
 
   UpdateExpenseSchema = Joi.object({
@@ -49,6 +49,7 @@ export class ExpensesRequest {
 
   validateDelete = (req, res, next) => {
     const { error } = this.paramsSchema.validate(req.params);
+    console.log('req params: ', req.params);
     if (error) {
       return res.status(400).json({ message: paramsError.details[0].message });
     }
@@ -56,6 +57,8 @@ export class ExpensesRequest {
   }
 
   validateGetAll = (req, res, next) => {
+
+
     const { error } = this.GetAllExpensesSchema.validate(req.params);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });

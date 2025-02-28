@@ -20,11 +20,11 @@ export class AuthSrv {
     login = async (data) => {
 
         const { usu_name, usu_password } = data; 
-        const transaction = await this.sequelize.transaction; 
+        const transaction = await this.sequelize.transaction(); 
 
         try {
             const user = await this.UserRep.findByName(usu_name, transaction);
-            if (!user) throw { message: 'Datos incorrectos', statusCode: 401, code: '' }
+            if (!user) throw { message: 'Datos incorrectos', statusCode: 401, code: '' };
 
             /**
              * Password validation w/ bcrypt
@@ -51,10 +51,11 @@ export class AuthSrv {
              * @param {Int} usu_id
              * @param {String} token
              */
-            await this.UserRep.update(user.usu_id, { usu_token: token }, transaction);
-            
+            await this.UserRep.updateToken(user.usu_id, { usu_token: token }, transaction);
+            await transaction.commit()
             return { token: token, usu_id: user.usu_id, role_id: user.role_id}
         } catch (err) {
+            await transaction.rollback()
             throw err; 
         }
     }

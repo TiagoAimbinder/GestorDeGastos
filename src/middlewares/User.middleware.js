@@ -1,10 +1,12 @@
 import Joi from "joi";
 import { getToken } from "../config/utils.js";
+import { config as dotEnvConfig } from "dotenv";
 
+dotEnvConfig()
 
-const { LOGIN_KEY, REGISTER_KEY } = process.env
 
 export class UserRequest {
+
 
   // Schemas -------------- 
   LoginSchema = Joi.object({
@@ -22,6 +24,9 @@ export class UserRequest {
   // Validaciones -------------- 
   validateLogin = (req, res, next) => {
     const loginKey = getToken(req);
+
+    const { LOGIN_KEY } = process.env
+
     if (loginKey !== LOGIN_KEY) {
       res.status(400).json({message: "Login key inválida"})
       return;
@@ -36,6 +41,9 @@ export class UserRequest {
 
   validateRegister = (req, res, next) => {
     const registerKey = getToken(req);
+
+    const { REGISTER_KEY } = process.env
+
     if (registerKey !== REGISTER_KEY) {
       res.status(400).json({message: "Register key inválida"})
       return;

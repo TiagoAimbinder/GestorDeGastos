@@ -46,7 +46,7 @@ export class CategorySrv {
     }
   }; 
 
-  updateCategory = async (data) => {
+  update = async (data) => {
 
     const transaction = await this.sequelize.transaction();
 
@@ -102,7 +102,7 @@ export class CategorySrv {
     const transaction = await this.sequelize.transaction();
 
     try {
-      const user = await this.User.findByID(usu_id, transaction); 
+      const user = await this.UserRep.findByID(usu_id, transaction); 
       if (!user) throw { statusCode: 404, message: 'El usuario no existe', code: '' }
 
       // ⚠️ | ALL USERS CAN DELETE CATEGORIES

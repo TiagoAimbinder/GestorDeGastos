@@ -36,7 +36,7 @@ export class ExpensesService {
 
   getAll = async (usu_id) => { 
     try {
-      const user = await this.UserRep.findByID(usu_id, transaction);
+      const user = await this.UserRep.findByID(usu_id);
       if (!user) throw { message: 'El usuario no existe', statusCode: 404, code: '' }
       return await this.ExpenseRep.getAll();
     } catch (err) {
@@ -47,6 +47,7 @@ export class ExpensesService {
   update = async (exp_id, usu_id, exp) => {
 
     const transaction = await this.sequelize.transaction();
+
     const { exp_name, exp_amount, exp_percentVta, cat_id } = exp;
 
     try {
@@ -62,19 +63,19 @@ export class ExpensesService {
       const expObj = { exp_name, exp_amount, exp_percentVta, cat_id }
 
       await this.ExpenseRep.update(expObj, exp_id, transaction);
-      await this.transaction.commit();
+      await transaction.commit();
     } catch (err) {
-      await this.transaction.rollback();
+      await transaction.rollback();
       throw err 
     }
   }; 
 
   delete = async (usu_id, exp_id) => {
     try {
-      const user = await this.UserRep.findByID(usu_id, transaction);
+      const user = await this.UserRep.findByID(usu_id);
       if (!user) throw { message: 'El usuario no existe', statusCode: 404, code: '' };
 
-      const expense = await this.ExpenseRep.findByID(exp_id, transaction); 
+      const expense = await this.ExpenseRep.findByID(exp_id); 
       if (!expense) throw { message: 'El gasto no existe', statusCode: 404, code: '' };
 
       await this.ExpenseRep.delete(exp_id);

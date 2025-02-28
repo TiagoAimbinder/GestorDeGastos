@@ -26,4 +26,8 @@ export class ExpenseRep {
     delete = async (exp_id, transaction = null) => {
         return await this.models.Expenses.destroy({ where: { exp_id }, transaction });
     }
+
+    findByID = async (exp_id, transaction = null) => {
+        return await this.models.Expenses.findOne({ where: { exp_id }, transaction });
+    }
 }

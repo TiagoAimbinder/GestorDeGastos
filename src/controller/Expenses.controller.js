@@ -45,7 +45,7 @@ export class ExpensesController {
     const { exp_name, exp_amount, exp_percentVta, cat_id } = req.body; 
     const exp = { exp_name, exp_amount, exp_percentVta, cat_id };
     try {
-      await this.ExpensesSrv.updateExpense(exp_id, usu_id, exp);
+      await this.ExpensesSrv.update(exp_id, usu_id, exp);
       res.status(200).json({ message: 'Gasto actualizado correctamente', success: true, code: ''})
     } catch (err) {
       res.status( err.statusCode || 500).json({ message: err.message || 'Error al actualizar el gasto', success: false, code: err.code || '' });

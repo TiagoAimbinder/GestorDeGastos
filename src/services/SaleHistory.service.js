@@ -1,7 +1,6 @@
-import { QueryTypes } from "sequelize";
-
 import { UserRep } from "../repositories/User.repository.js";
 import { SaleHistoryRep } from "../repositories/SaleHistory.repository.js";
+import { Database } from "../config/db.js";
 
 
 export class SaleHistoryService {
@@ -43,7 +42,7 @@ export class SaleHistoryService {
 
   getTotals = async (usu_id) => {
     try {
-      const user = await this.UserRep.findByID(usu_id, transaction)
+      const user = await this.UserRep.findByID(usu_id)
       if (!user) throw { message: 'No existe un usuario registrado con ese ID.', statusCode: 400, code: '' };
       return await this.SaleHistoryRep.totals();
     } catch (err) {

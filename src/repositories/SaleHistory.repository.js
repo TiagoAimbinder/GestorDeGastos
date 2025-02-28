@@ -1,5 +1,5 @@
+import { QueryTypes } from "sequelize";
 import { Database } from "../config/db.js";
-
 
 export class SaleHistoryRep {
 
@@ -71,6 +71,6 @@ export class SaleHistoryRep {
                     ELSE 0
                 END) / NULLIF(DATEDIFF(CURDATE(), DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 4) % 7 DAY)) + 1, 0) AS promedio_diario_semanal
         FROM saleHistories;
-        `);
+    `);
     }; 
 }

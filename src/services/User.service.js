@@ -13,7 +13,7 @@ export class UserService {
     const emailRegex = /^\S+@\S+\.\S+$/;
 
     try {
-      const userDB = this.UserRep.findByName(usu_name);      
+      const userDB = await this.UserRep.findByName(usu_name);      
       if (userDB) throw { message: 'Ya existe un usuario registrado con ese nombre.', statusCode: 400, code: '' };  
       if (!emailRegex.test(usu_email)) throw { message: 'Formato de correo electrónico inválido.', statusCode: 400, code: '' }
       await this.UserRep.create(user, role_id);
