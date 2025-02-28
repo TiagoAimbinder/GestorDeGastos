@@ -1,16 +1,25 @@
 import { Router } from "express";
 import { UserController } from "../controller/User.controller.js";
+import { AuthCtr } from "../controller/Auth.controller.js";
 import { UserRequest } from "../middlewares/User.middleware.js";
 import { authJWT } from "../config/utils.js";
 
-const routeUser = Router();
+export class RouteUser {
 
-const userController = new UserController()
-const userRequest = new UserRequest();
+  constructor() {
+    this.UserReq = new UserRequest();
+    this.UserCtr = new UserController();
+    this.AuthCtr = new AuthCtr();
+    this.routeUser = Router();
+  }
 
-routeUser.post("/login", userRequest.validateLogin, userController.loginUser); 
-routeUser.post("/register", userRequest.validateRegister, userController.registerUser); 
-routeUser.get("/getAll", authJWT, userController.getAllUsers);
-routeUser.post("/validateToken", authJWT, userController.validateToken);
+  routesInit = () => {
+    this.routeUser.post("/login", this.UserReq.validateLogin, this.AuthCtr.login); 
+    this.routeUser.post("/register", this.UserReq.validateRegister, this.UserCtr.registerUser); 
+    this.routeUser.get("/getAll", authJWT, this.UserCtr.getAllUsers);
+    this.routeUser.post("/validateToken", authJWT, this.AuthCtr.validateToken);
 
-export default routeUser;
+    return this.routeUser;
+  }
+
+}

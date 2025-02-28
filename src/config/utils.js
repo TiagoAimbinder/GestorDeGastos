@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs'; 
+import { config as dotenvConfig } from 'dotenv'; 
 
+dotenvConfig();
 
 const encryptData = (data) => {
   return new Promise((resolve, reject) => {
@@ -12,7 +14,10 @@ const encryptData = (data) => {
 
 const secret = process.env.SECRET_KEY;
 const authJWT = (req, res, next) => {
+
+
   const authHeaders = req.headers.authorization;
+
   if(authHeaders) {
       const token = authHeaders.split(' ')[1];
       jwt.verify(token, secret, (err, user) => { 

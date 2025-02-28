@@ -1,53 +1,86 @@
+import { Database } from "../config/db.js";
+import { ManangementWeekRep } from "../repositories/ManangementWeek.repository.js";
+import { UserRep } from "../repositories/User.repository.js";
+import { ManangementRep } from "../repositories/Manangement.repository.js";
 
-import { ManangementWeek, ManangementHistory, sequelize} from '../config/db.js'
-
-
-// const sequelize = new Sequelize('sqlite::memory:');
 
 export class ManangementWeekService {
 
-    createMovement = async (movement) => {
-      try {
-        const movementCreated = await ManangementWeek.create({
-          hw_date: movement.hw_date,
-          hw_amount: movement.hw_amount,
-          hw_description: movement.hw_description,
-          hw_type: movement.hw_type,
-          usu_id: movement.usu_id,
-          cur_id: movement.cur_id,
-          hw_status: true,
-        })
+  constructor() {
+    this.ManangementWeekRep = new ManangementWeekRep();
+    this.ManangementRep = new ManangementRep();
+    this.UserRep = new UserRep();
+  }
 
-        const result = { message: "Movimiento creado correctamente", movement: movementCreated}
-        return result;
+  get sequelize() { return Database.sequelize }
+
+    create  = async (movement) => {
+      const { hw_amount } = movement;
+      try {
+        if (!Number.isFinite(hw_amount) || hw_amount <= 0) throw { message: "Monto debe ser un número positivo", statusCode: 400 };
+        await this.ManangementWeekRep.create(movement);
       } 
       catch (err) {
         throw err; 
       }
     }
 
-    updateMovement = async (hw_id, updatedFields) => {
+    getAll = async () => {
       try {
-        const hwUpdated = await ManangementWeek.update(updatedFields, {
-          where: {hw_id: hw_id}
-        }); 
-        const result = {message: "Movimiento actualizado correctamente"}
-        return result;
+        const movements = await this.ManangementWeekRep.getAll();
+        if (!movements) throw { message: "No existen movimientos.", statusCode: 404 }; 
+      } catch (err) {
+        throw err; 
+      }
+    }; 
+
+    delete = async (hw_id) => {
+      try {
+        await this.ManangementWeekRep.deleteByID(hw_id);
+      } catch (err) {
+        throw err
+      }
+    } 
+
+    update = async (hw_id, usu_id, updatedFields) => {
+      const { hw_amount, hw_description, hw_type, cur_id } = updatedFields
+
+      try {
+        const toUpdate = { hw_amount, hw_description, hw_type, cur_id }
+  
+        const updatedFields = {};
+        const fieldsToUpdate = ['hw_amount', 'hw_description', 'hw_type', 'cur_id'];
+        fieldsToUpdate.forEach(field => { 
+          if (toUpdate[field] !== null && toUpdate[field] !== undefined) {
+            updatedFields[field] = toUpdate[field];
+          }
+        });
+  
+        if (Object.keys(updatedFields).length === 0) throw { message: 'No se proporcionaron datos para actualizar.' , statusCode: 400, code: '' }
+
+        const hw = await this.ManangementWeekRep.findByID(hw_id);
+        if (!hw) throw { message: 'El movimiento no existe.', statusCode: 404, code: ''}
+
+  
+        if (Number(usu_id) !== hw.usu_id) throw { message: 'No tiene permisos para actualizar este movimiento. Solo el creador del movimiento puede modificarlo.', statusCode: 403, code: ''} 
+
+        await this.ManangementWeekRep.update(hw_id, updatedFields);
       }
       catch (err) {
-        throw err; 
+        throw err
       } 
     }
 
-    goToGeneral = async () => {
-      console.log("goToGeneral")
-      const t = await sequelize.transaction();
+    goToGeneral = async (usu_id) => {
+      const transaction = await this.sequelize.transaction();
       
       try {
-        // Obtener los datos de la tabla ManagementWeek
-        const tempExpenses = await ManangementWeek.findAll({ transaction: t });
+        const user = await this.UserRep.findByID(usu_id, transaction)
+        if (!user) throw { message: 'El usuario no existe.', statusCode: 404, code: '' }
+        if (Number(usu_id) !== 5) throw { message: 'No tiene permisos para realizar esta accion', statusCode: 403, code: ''};
+
+        const tempExpenses = await this.ManangementWeekRep.getAll(transaction)
     
-        // Mapear los datos para insertar en la tabla ManagementHistory
         const generalExpensesData = tempExpenses.map(expense => ({
           his_amount: expense.hw_amount,
           his_description: expense.hw_description,
@@ -57,26 +90,17 @@ export class ManangementWeekService {
           usu_id: expense.usu_id,
           cur_id: expense.cur_id,
         }));
-    
-        // Insertar los datos en la tabla ManagementHistory
-        await ManangementHistory.bulkCreate(generalExpensesData, { transaction: t });
-    
-        // Eliminar los datos de la tabla ManagementWeek
-        await ManangementWeek.destroy({ where: {}, transaction: t });
-    
-        // Confirmar la transacción
-        await t.commit();
-        console.log('Datos migrados exitosamente.');
-        return { message: 'Transferencia completada exitosamente.' };
+
+        await this.ManangementRep.bulkCreate(generalExpensesData, transaction); 
+        await this.ManangementWeekRep.deleteAll(transaction);
         
+        await transaction.commit();
       } catch (error) {
-        // Revertir la transacción en caso de error
-        await t.rollback();
-        console.error('Error al migrar los datos:', error);
-        return { message: 'Error al transferir los datos.', error: error.message };
+        await transaction.rollback();
+        throw err; 
       }
     };
   
-  };
+};
   
 

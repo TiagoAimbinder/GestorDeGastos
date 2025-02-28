@@ -3,14 +3,23 @@ import { CategoryController } from "../controller/Category.controller.js";
 import { CategoryRequest } from "../middlewares/Category.middleware.js";
 import { authJWT } from '../config/utils.js'
 
-const routeCategory = Router();
+export class RouteCategory {
 
-const categoryController = new CategoryController(); 
-const categoryRequest = new CategoryRequest();
+  constructor() {
+    this.CategoryCtr = new CategoryController(); 
+    this.CategoryReq = new CategoryRequest();
+    this.routeCategory = Router();
+  }
 
-routeCategory.post('/create', authJWT, categoryRequest.validateCreate, categoryController.createCategory); 
-routeCategory.get('/getAll/:usu_id', authJWT, categoryRequest.validateGetAll, categoryController.getAllCategories);
-routeCategory.put('/update/:cat_id/:usu_id', authJWT, categoryRequest.validateUpdate, categoryController.updateCategory);
-routeCategory.delete('/delete/:cat_id/:usu_id', authJWT, categoryRequest.validateDelete, categoryController.deleteCategory);
+  routesInit = () => {
+    this.routeCategory.post('/create', authJWT, this.CategoryReq.validateCreate, this.CategoryCtr.createCategory);
+    this.routeCategory.get('/getAll/:usu_id', authJWT, this.CategoryReq.validateGetAll, this.CategoryCtr.getAllCategories);
+    this.routeCategory.put('/update/:cat_id/:usu_id', authJWT, this.CategoryReq.validateUpdate, this.CategoryCtr.updateCategory);
+    this.routeCategory.delete('/delete/:cat_id/:usu_id', authJWT, this.CategoryReq.validateDelete, this.CategoryCtr.deleteCategory);
+    return this.routeCategory;
+  }
 
-export default routeCategory;
+
+
+
+}
