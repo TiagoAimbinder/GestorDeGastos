@@ -34,7 +34,7 @@ export class Database {
   sequelizeInit = () => {
     Database.sequelize = new Sequelize(this.DB_DATABASE, this.DB_USER, this.DB_PASSWORD, {
       host: this.DB_HOST,
-      dialect: 'mssql',
+      dialect: 'mysql',
       dialectOptions: {
           options: {
               encrypt: false,

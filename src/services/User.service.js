@@ -25,7 +25,7 @@ export class UserService {
   getAll = async () => {
     try {
       const PARAMS = ['usu_id','usu_name']
-      const users = await this.User.getAll(PARAMS)
+      const users = await this.UserRep.getAll(PARAMS)
       if (!users) throw { message: 'No se encontraron usuarios.', statusCode: 404, code: ''} 
       return users; 
     } catch (err) {
