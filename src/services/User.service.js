@@ -1,55 +1,36 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs'; 
-import { User, LogHistory } from '../config/db.js';
-import { encryptData } from '../config/utils.js'
+import { UserRep } from '../repositories/User.repository.js';
 
 export class UserService {
 
-  registerUser = async (usu_name, usu_password, usu_email, role_id) => {
-    try { 
-      const userCreated = await User.create({
-        usu_name: usu_name,
-        usu_password: await encryptData(usu_password),
-        usu_email: usu_email, 
-        role_id: role_id,
-        usu_token: null
-      })
-      const result = {message: "Usuario creado correctamente."}
-      return result;
-    } 
-    catch (err) {
-      throw err
-    }
+
+  constructor() {
+    this.UserRep = new UserRep();
   }
 
-  loginUser = async (user, usu_password) => {
+  register = async (user) => {
+    const { usu_name, usu_email } = user;
+    const role_id = 2; 
+    const emailRegex = /^\S+@\S+\.\S+$/;
+
     try {
-
-      // Validación de contraseña: 
-      const validPassword = await bcrypt.compare(usu_password, user.usu_password)
-
-      if (validPassword === false || validPassword === undefined || validPassword === null) {
-        const result = {message: "Contraseña incorrecta", statusCode: 401}
-        return result; 
-      } 
-
-      // Creo el log del usuario: 
-      await LogHistory.create({
-        usu_id: user.usu_id
-      });
-
-      // Creo el token y actualizo el usuario en la DB
-      const token = jwt.sign({username: user.usu_name}, process.env.SECRET_KEY, {expiresIn:'4h'});
-      await User.update({usu_token: token}, {where: {usu_id: user.usu_id}});
-
-      // Devuelvo el token al Front: 
-      const result = { message: "Login correcto", token: token, usu_id: user.usu_id, role_id: user.role_id};
-      return result; 
-    } 
-    catch(err) {
-      throw err
+      const userDB = await this.UserRep.findByName(usu_name);      
+      if (userDB) throw { message: 'Ya existe un usuario registrado con ese nombre.', statusCode: 400, code: '' };  
+      if (!emailRegex.test(usu_email)) throw { message: 'Formato de correo electrónico inválido.', statusCode: 400, code: '' }
+      await this.UserRep.create(user, role_id);
+    } catch (err) {
+      throw err      
     }
   }
 
+  getAll = async () => {
+    try {
+      const PARAMS = ['usu_id','usu_name']
+      const users = await this.UserRep.getAll(PARAMS)
+      if (!users) throw { message: 'No se encontraron usuarios.', statusCode: 404, code: ''} 
+      return users; 
+    } catch (err) {
+      throw err; 
+    }
+  }
 
 }; 

@@ -7,9 +7,27 @@ const routeExpenses = Router()
 const expensesController = new ExpensesController();
 const expensesRequest = new ExpensesRequest();
 
-routeExpenses.post('/create', authJWT, expensesRequest.validateCreate, expensesController.createExpenses);
-routeExpenses.get('/getAll/:usu_id', authJWT, expensesRequest.validateGetAll, expensesController.getAll);
-routeExpenses.delete('/delete/:exp_id/:usu_id', authJWT, expensesRequest.validateDelete, expensesController.deleteExpense);
-routeExpenses.put('/update/:exp_id/:usu_id', authJWT, expensesRequest.validateUpdate, expensesController.updateExpense);
 
 export default routeExpenses; 
+
+
+export class RouteExpenses {
+
+  constructor() {
+    this.ExpensesReq = new ExpensesRequest();
+    this.ExpensesCtr = new ExpensesController();
+
+    this.routeExpenses = Router();
+  }
+
+  routesInit = () => {
+    this.routeExpenses.post('/create', authJWT, this.ExpensesReq.validateCreate, this.ExpensesCtr.create);
+    this.routeExpenses.get('/getAll/:usu_id', authJWT, this.ExpensesReq.validateGetAll, this.ExpensesCtr.getAll);
+    this.routeExpenses.delete('/delete/:exp_id/:usu_id', authJWT, this.ExpensesReq.validateDelete, this.ExpensesCtr.delete);
+    this.routeExpenses.put('/update/:exp_id/:usu_id', authJWT, this.ExpensesReq.validateUpdate, this.ExpensesCtr.update);
+
+    return this.routeExpenses;
+  }
+
+
+}

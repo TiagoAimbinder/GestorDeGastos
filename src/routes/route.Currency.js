@@ -2,11 +2,16 @@ import { Router } from "express";
 import { CurrencyController } from "../controller/Currency.controller.js";
 
 
-const routeCurrency = Router();
 
+export class RouteCurrency {
 
-const currencyController = new CurrencyController();
+  constructor() {
+    this.CurrencyCtr = new CurrencyController();
+    this.routeCurrency = Router();
+  }
 
-routeCurrency.get('/getAll', currencyController.getAllCurrencyTypes);
-
-export default routeCurrency;
+  routesInit = () => {
+    this.routeCurrency.get('/getAll', this.CurrencyCtr.getAll);
+    return this.routeCurrency;
+  }
+}

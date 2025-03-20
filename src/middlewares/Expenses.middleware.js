@@ -3,7 +3,6 @@ import Joi from 'joi';
 
 export class ExpensesRequest {
 
-
   CreateExpenseSchema = Joi.object({
     usu_id: Joi.number().required(),
     exp_name: Joi.string().required(),
@@ -17,8 +16,8 @@ export class ExpensesRequest {
   })
 
   paramsSchema = Joi.object({
-    usu_id: Joi.number().required(),
-    exp_id: Joi.number().required(),
+    usu_id: Joi.string().required(),
+    exp_id: Joi.string().required(),
   })
 
   UpdateExpenseSchema = Joi.object({
@@ -57,6 +56,8 @@ export class ExpensesRequest {
   }
 
   validateGetAll = (req, res, next) => {
+
+
     const { error } = this.GetAllExpensesSchema.validate(req.params);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });

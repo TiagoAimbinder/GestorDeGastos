@@ -3,14 +3,24 @@ import { ManangementWeekController } from "../controller/ManangementWeek.control
 import { ManangementWeekRequest } from "../middlewares/ManangementWeek.middleware.js";
 import { authJWT } from "../config/utils.js";
 
-const routeManangementWeek = Router();
-const manangementWeekController = new ManangementWeekController(); 
-const manangementWeekRequest = new ManangementWeekRequest(); 
+export class RouteManangementWeek {
 
-routeManangementWeek.post("/create", authJWT, manangementWeekRequest.validateCreate, manangementWeekController.createMovement)
-routeManangementWeek.get("/getAll", authJWT, manangementWeekController.getAllMovements )
-routeManangementWeek.put("/update/:his_id/:usu_id", authJWT, manangementWeekRequest.validateUpdate ,manangementWeekController.updateMovement);
-routeManangementWeek.put("/delete/:id", authJWT, manangementWeekRequest.validateDelete, manangementWeekController.deleteMovement );
-routeManangementWeek.put("/migrate/:usu_id", manangementWeekController.goToGeneral)
+  constructor() {
+    this.ManangementWeekReq = new ManangementWeekRequest();
+    this.ManangementWeekCtr = new ManangementWeekController();
 
-export default routeManangementWeek
+    this.routeManangementWeek = Router();
+  }
+
+
+  routesInit  = () => {
+    this.routeManangementWeek.post("/create", authJWT, this.ManangementWeekReq.validateCreate, this.ManangementWeekCtr.create)
+    this.routeManangementWeek.get("/getAll", authJWT, this.ManangementWeekCtr.getAll )
+    this.routeManangementWeek.put("/update/:his_id/:usu_id", authJWT, this.ManangementWeekReq.validateUpdate, this.ManangementWeekCtr.updateMovement);
+    this.routeManangementWeek.put("/delete/:id", authJWT, this.ManangementWeekReq.validateDelete, this.ManangementWeekCtr.deleteMovement );
+    this.routeManangementWeek.put("/migrate/:usu_id", this.ManangementWeekCtr.goToGeneral)
+
+    return this.routeManangementWeek;
+  }
+
+}
